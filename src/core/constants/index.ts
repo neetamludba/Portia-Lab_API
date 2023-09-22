@@ -1,0 +1,15 @@
+export const SEQUELIZE = 'SEQUELIZE';
+export const DEVELOPMENT = 'development';
+export const TEST = 'test';
+export const STAGING = 'staging';
+export const PRODUCTION = 'production';
+
+export const TEST_REPOSITORY = 'TEST_REPOSITORY';
+export const TEST_CATEGORY_REPOSITORY = 'TEST_CATEGORY_REPOSITORY';
+export const TEST_QUESTION_REPOSITORY = 'TEST_QUESTION_REPOSITORY';
+export const TEST_ASSIGNMENT_REPOSITORY = 'TEST_ASSIGNMENT_REPOSITORY';
+export const TEST_ATTEMPT_REPOSITORY = 'TEST_ATTEMPT_REPOSITORY';
+export const TEST_ANSWER_REPOSITORY = 'TEST_ANSWER_REPOSITORY';
+export const USER_REPOSITORY = 'USER_REPOSITORY';
+
+export const SALT_OR_ROUNDS = 10;
