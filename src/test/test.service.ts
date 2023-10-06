@@ -18,7 +18,7 @@ export class TestService {
   ) {}
 
   async create(createTestDto: CreateTestDto) {
-    return await this.testsRepository.create<Test>(createTestDto, {
+    return await this.testsRepository.create<Test>(createTestDto as any, {
       include: TestQuestion,
     });
   }
@@ -65,7 +65,7 @@ export class TestService {
       })
       .then(async (updateResponse) => {
         updateTestDto.questions.forEach(async (question) => {
-          await this.testQuestionRepository.upsert(question);
+          await this.testQuestionRepository.upsert(question as any);
         });
 
         return updateResponse;

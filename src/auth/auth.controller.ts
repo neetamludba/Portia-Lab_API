@@ -15,13 +15,13 @@ export class AuthController {
     return this.authService.login(loginData);
   }
 
-  @Post('/forgetpassword')
-  forgetPassword(@Body() forgetData: ForgetPasswordDto) {
-    return this.authService.forgetPassword(forgetData);
-  }
+  // @Post('/forgetpassword')
+  // forgetPassword(@Body() forgetData: ForgetPasswordDto) {
+  //   return this.authService.forgetPassword(forgetData);
+  // }
 
-  @Post('/resetpassword')
-  resetPassword(@Body() resetData: ResetPasswordDto) {
-    return this.authService.resetPassword(resetData);
-  }
+  // @Post('/resetpassword')
+  // resetPassword(@Body() resetData: ResetPasswordDto) {
+  //   return this.authService.resetPassword(resetData);
+  // }
 }

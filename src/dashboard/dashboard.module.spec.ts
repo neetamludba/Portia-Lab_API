@@ -83,10 +83,12 @@ describe('Dashboard E2E TEST', () => {
   it('Dashbboard => Admin', async () => {
     expect(await controller.adminDashboardData()).toBeTruthy;
     expect(await controller.categoryWiseScoresForAdmin()).toBeTruthy;
+    expect(await controller.testWiseScoresForAdmin()).toBeTruthy;
   });
 
   it('Dashbboard => User', async () => {
     expect(await controller.userDashboardData('2')).toBeTruthy;
     expect(await controller.categoryWiseUserScoresForUser('2')).toBeTruthy;
+    expect(await controller.testWiseUserScoresForUser('2')).toBeTruthy;
   });
 });

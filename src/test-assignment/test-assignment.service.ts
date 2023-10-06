@@ -22,12 +22,12 @@ export class TestAssignmentService {
     private readonly testRepository: typeof Test,
     @Inject(TEST_ATTEMPT_REPOSITORY)
     private readonly testAttemptRepositry: typeof TestAttempt,
-  ) {}
+  ) { }
 
   async create(
     createTestAssignmentDto: CreateTestAssignmentDto,
   ): Promise<TestAssignment> {
-    return await this.testAssignmentRepository.create(createTestAssignmentDto);
+    return await this.testAssignmentRepository.create(createTestAssignmentDto as any);
   }
 
   async findAll() {
@@ -53,13 +53,22 @@ export class TestAssignmentService {
       let byUser = await this.userRepository.findOne({
         where: { userID: x.assignedByID },
       });
+      let assignedToName: string = '';
+      let assignedByName: string = '';
+
+      if (toUser) {
+        assignedToName = toUser.firstName + ' ' + toUser.lastName;
+      }
+      if (byUser) {
+        assignedByName = byUser.firstName + ' ' + byUser.lastName;
+      }
 
       return {
         testAssignmentID: x.testAssignmentID,
         assignedToID: x.assignedToID,
         assignedByID: x.assignedByID,
-        assignedToName: toUser.firstName + ' ' + toUser.lastName,
-        assignedByName: byUser.firstName + ' ' + byUser.lastName,
+        assignedToName: assignedToName,
+        assignedByName: assignedByName,
         assignedDate: x.assignedDate,
       };
     });
@@ -89,14 +98,23 @@ export class TestAssignmentService {
         where: { testAssignmentID: x.testAssignmentID },
       });
 
+      let assignedToName: string = '';
+      let assignedByName: string = '';
+
+      if (toUser) {
+        assignedToName = toUser.firstName + ' ' + toUser.lastName;
+      }
+      if (byUser) {
+        assignedByName = byUser.firstName + ' ' + byUser.lastName;
+      }
       return {
         testAssignmentID: x.testAssignmentID,
         testID: x.testID,
         testDescription: test.description,
         assignedToID: x.assignedToID,
         assignedByID: x.assignedByID,
-        assignedToName: toUser.firstName + ' ' + toUser.lastName,
-        assignedByName: byUser.firstName + ' ' + byUser.lastName,
+        assignedToName: assignedToName,
+        assignedByName: assignedByName,
         assignedDate: x.assignedDate,
         attempted: assignment !== null,
       };

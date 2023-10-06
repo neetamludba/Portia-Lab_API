@@ -32,7 +32,7 @@ export class TestAttemptService {
     )
       return Promise.reject(new Error('No answers found in attempt'));
 
-    return await this.testAttemptRepository.create(createTestAttemptDto, {
+    return await this.testAttemptRepository.create(createTestAttemptDto as any, {
       include: TestAnswer,
     });
   }

@@ -7,6 +7,7 @@ import { SALT_OR_ROUNDS, USER_REPOSITORY } from '../core/constants';
 import { User } from './entities/user.entity';
 import { MailService } from '../mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
+import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class UserService {
@@ -26,6 +27,9 @@ export class UserService {
       throw new HttpException('USER_ALREADY_EXISTS', HttpStatus.CONFLICT);
 
     // const hashPassword = await this.hash(createUserDto.password);
+    if ( createUserDto.password === undefined ) {
+      createUserDto.password = createUserDto.strKey;
+    }
     createUserDto.password = await this.hash(createUserDto.password);
     
     const newUser = await this.userRepository.create({

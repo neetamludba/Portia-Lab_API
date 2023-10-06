@@ -12,7 +12,7 @@ export class TestQuestionService {
   ) {}
 
   async create(createTestQuestionDto: CreateTestQuestionDto) {
-    return await this.testQuestionRepository.create(createTestQuestionDto);
+    return await this.testQuestionRepository.create(createTestQuestionDto as any);
   }
 
   async findAll(testID: number) {
