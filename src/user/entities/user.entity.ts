@@ -26,8 +26,11 @@ export class User extends Model {
   @Column({ field: 'Password', allowNull: false })
   password: string;
 
-  @Column({ field: 'StrKey', allowNull: false })
+  @Column({ field: 'Str_Key', allowNull: false })
   strKey: string;
+
+  @Column({ field: 'User_Type', allowNull: false })
+  userType: string;
 
   @Column({
     field: 'Registration_Date',

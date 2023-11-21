@@ -7,7 +7,6 @@ import { SALT_OR_ROUNDS, USER_REPOSITORY } from '../core/constants';
 import { User } from './entities/user.entity';
 import { MailService } from '../mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
-import { isEmpty } from 'class-validator';
 
 @Injectable()
 export class UserService {
@@ -49,19 +48,19 @@ export class UserService {
       },
     );
 
-    try {
-      await this.mailService.sendUserConfirmationEmail(
-        newUser,
-        process.env.WEBAPP_URL +
-          '/' +
-          process.env.CONFIRM_ACCT_ENDPOINT +
-          '?token=' +
-          confirmToken,
-      );
-    } catch (error) {
-      console.log(error);
-      throw new HttpException('ERROR_SENDING_EMAIL', HttpStatus.BAD_REQUEST);
-    }
+  //   try {
+  //     await this.mailService.sendUserConfirmationEmail(
+  //       newUser,
+  //       process.env.WEBAPP_URL +
+  //         '/' +
+  //         process.env.CONFIRM_ACCT_ENDPOINT +
+  //         '?token=' +
+  //         confirmToken,
+  //     );
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new HttpException('ERROR_SENDING_EMAIL', HttpStatus.BAD_REQUEST);
+  //   }
 
     return newUser;
   }

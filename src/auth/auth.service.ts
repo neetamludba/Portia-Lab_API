@@ -147,6 +147,7 @@ export class AuthService {
       email: user.email,
       registerationDate: user.registerationDate,
       companyID: user.companyID,
+      userType: user.userType
     };
   }
 }

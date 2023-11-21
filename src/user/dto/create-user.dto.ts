@@ -25,5 +25,9 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsNotEmpty()
+  userType: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
   companyID: number;
 }
