@@ -87,6 +87,7 @@ describe('User E2E TEST', () => {
     dto3.lastName = 'User';
     dto3.strKey = 'I AM A NEW USER';
     dto3.password = undefined;
+    dto3.userType = 'Student';
 
     newUser = await userController.create(dto3);
 
@@ -119,6 +120,16 @@ describe('User E2E TEST', () => {
 
   it('User => Find All Active', async () => {
     expect(userController.findAllActive()).toBeTruthy;
+  });
+
+  it('User => Find All For Admin', async () => {
+    let companyId = '1';
+    expect(userController.findAllForAdmin(companyId)).toBeTruthy;
+  });
+
+  it('User => Find All For Teacher', async () => {
+    let companyId = '1';
+    expect(userController.findAllForTeacher(companyId)).toBeTruthy;
   });
 
   it('User => Find One', () => {

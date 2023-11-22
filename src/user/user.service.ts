@@ -15,7 +15,7 @@ export class UserService {
     private readonly userRepository: typeof User,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
-  ) {}
+  ) { }
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.userRepository.findOne({
@@ -26,11 +26,11 @@ export class UserService {
       throw new HttpException('USER_ALREADY_EXISTS', HttpStatus.CONFLICT);
 
     // const hashPassword = await this.hash(createUserDto.password);
-    if ( createUserDto.password === undefined ) {
+    if (createUserDto.password === undefined) {
       createUserDto.password = createUserDto.strKey;
     }
     createUserDto.password = await this.hash(createUserDto.password);
-    
+
     const newUser = await this.userRepository.create({
       ...createUserDto,
       // password: hashPassword,
@@ -48,19 +48,19 @@ export class UserService {
       },
     );
 
-  //   try {
-  //     await this.mailService.sendUserConfirmationEmail(
-  //       newUser,
-  //       process.env.WEBAPP_URL +
-  //         '/' +
-  //         process.env.CONFIRM_ACCT_ENDPOINT +
-  //         '?token=' +
-  //         confirmToken,
-  //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //     throw new HttpException('ERROR_SENDING_EMAIL', HttpStatus.BAD_REQUEST);
-  //   }
+    //   try {
+    //     await this.mailService.sendUserConfirmationEmail(
+    //       newUser,
+    //       process.env.WEBAPP_URL +
+    //         '/' +
+    //         process.env.CONFIRM_ACCT_ENDPOINT +
+    //         '?token=' +
+    //         confirmToken,
+    //     );
+    //   } catch (error) {
+    //     console.log(error);
+    //     throw new HttpException('ERROR_SENDING_EMAIL', HttpStatus.BAD_REQUEST);
+    //   }
 
     return newUser;
   }
@@ -72,6 +72,18 @@ export class UserService {
   async findAllActive() {
     return await this.userRepository.findAll({
       where: { active: true },
+    });
+  }
+
+  async findAllForAdmin(companyId: number) {
+    return await this.userRepository.findAll({
+      where: { companyID: companyId, userType: ['Teacher', 'Student', 'Guardian'] },
+    });
+  }
+
+  async findAllForTeacher(companyId: number) {
+    return await this.userRepository.findAll({
+      where: { companyID: companyId, userType: ['Student', 'Guardian'] },
     });
   }
 
