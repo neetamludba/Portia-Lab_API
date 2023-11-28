@@ -31,6 +31,7 @@ describe('Test Assignment INTEGRATION TEST', () => {
           database: process.env.TEST_DB_NAME,
           autoLoadModels: true,
           synchronize: true,
+          logging: false,
           models: [
             TestAssignment,
             TestModel,

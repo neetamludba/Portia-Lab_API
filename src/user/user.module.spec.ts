@@ -33,6 +33,7 @@ describe('User E2E TEST', () => {
           autoLoadModels: true,
           synchronize: true,
           models: [User],
+          logging: false,
         }),
         SequelizeModule.forFeature([User]),
         // JwtModule.register({
@@ -70,19 +71,19 @@ describe('User E2E TEST', () => {
 
     let dto1 = new CreateUserDto();
     dto1.companyID = 1;
-    dto1.email = 'test@test.com';
+    dto1.email = 'test1@test.com';
     expect(userController.create(dto1)).rejects.toThrow();
 
     let dto2 = new CreateUserDto();
     dto2.companyID = 1;
-    dto2.email = 'test@test.com';
+    dto2.email = 'test2@test.com';
     dto2.firstName = 'Test';
     expect(userController.create(dto2)).rejects.toThrow();
 
     // creating unique variables is necessary
     let dto3 = new CreateUserDto();
     dto3.companyID = 1;
-    dto3.email = 'test@test.com';
+    dto3.email = 'test3@test.com';
     dto3.firstName = 'Test';
     dto3.lastName = 'User';
     dto3.strKey = 'I AM A NEW USER';
@@ -91,7 +92,7 @@ describe('User E2E TEST', () => {
 
     newUser = await userController.create(dto3);
 
-    expect(newUser).toBeTruthy;
+    expect(newUser).toBeTruthy();
   });
 
   it('User => Login', async () => {
@@ -104,7 +105,7 @@ describe('User E2E TEST', () => {
     dto1.password = 'I AM A NEW USER';
 
     loginData = await authController.login(dto1);
-    expect(loginData).toBeTruthy;
+    expect(loginData).toBeTruthy();
   });
 
   // it('User => Reset Password', async () => {
@@ -115,28 +116,28 @@ describe('User E2E TEST', () => {
   // });
 
   it('User => Find All', async () => {
-    expect(userController.findAll()).toBeTruthy;
+    expect(userController.findAll()).toBeTruthy();
   });
 
   it('User => Find All Active', async () => {
-    expect(userController.findAllActive()).toBeTruthy;
+    expect(userController.findAllActive()).toBeTruthy();
   });
 
   it('User => Find All For Admin', async () => {
     let companyId = '1';
-    expect(userController.findAllForAdmin(companyId)).toBeTruthy;
+    expect(userController.findAllForAdmin(companyId)).toBeTruthy();
   });
 
   it('User => Find All For Teacher', async () => {
     let companyId = '1';
-    expect(userController.findAllForTeacher(companyId)).toBeTruthy;
+    expect(userController.findAllForTeacher(companyId)).toBeTruthy();
   });
 
   it('User => Find One', () => {
-    expect(userController.findOne(newUser.userID.toString())).toBeTruthy;
+    expect(userController.findOne(newUser.userID.toString())).toBeTruthy();
   });
 
   it('User => Delete', () => {
-    expect(userController.remove(newUser.userID.toString())).toBeTruthy;
+    expect(userController.remove(newUser.userID.toString())).toBeTruthy();
   });
 });

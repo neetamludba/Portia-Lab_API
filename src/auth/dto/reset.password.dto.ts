@@ -4,9 +4,13 @@ import { IsNotEmpty } from 'class-validator';
 export class ResetPasswordDto {
   @ApiProperty()
   @IsNotEmpty()
-  token: string;
+  userID: number;
 
   @ApiProperty()
   @IsNotEmpty()
-  password: string;
+  oldPassword: string;
+  
+  @ApiProperty()
+  @IsNotEmpty()
+  newPassword: string;
 }

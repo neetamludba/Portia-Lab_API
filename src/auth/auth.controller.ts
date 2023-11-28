@@ -14,7 +14,10 @@ export class AuthController {
   login(@Body() loginData: LoginUserDto) {
     return this.authService.login(loginData);
   }
-
+@Post('/resetpasswordbyuser')
+  resetPassword(@Body() resetData: ResetPasswordDto) {
+    return this.authService.resetPasswordByUser(resetData);
+  }
   // @Post('/forgetpassword')
   // forgetPassword(@Body() forgetData: ForgetPasswordDto) {
   //   return this.authService.forgetPassword(forgetData);
