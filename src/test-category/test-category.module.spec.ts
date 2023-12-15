@@ -25,6 +25,7 @@ describe('Test Category E2E TEST', () => {
           database: process.env.TEST_DB_NAME,
           autoLoadModels: true,
           synchronize: true,
+          logging: false,
           models: [TestCategory],
         }),
         SequelizeModule.forFeature([TestCategory]),

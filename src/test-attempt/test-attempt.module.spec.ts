@@ -33,6 +33,7 @@ describe('Test Attempt INTEGRATION TEST', () => {
           database: process.env.TEST_DB_NAME,
           autoLoadModels: true,
           synchronize: true,
+          logging: false,
           models: [
             TestAttempt,
             TestModel,

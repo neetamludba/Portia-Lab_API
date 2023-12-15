@@ -41,6 +41,7 @@ describe('Dashboard E2E TEST', () => {
           autoLoadModels: true,
           synchronize: true,
           models: [User],
+          logging: false
         }),
         SequelizeModule.forFeature([
           User,

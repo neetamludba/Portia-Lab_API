@@ -18,9 +18,7 @@ export class UserService {
   ) { }
 
   async create(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
+    const user = await this.findOneByEmail(createUserDto.email);
 
     if (user)
       throw new HttpException('USER_ALREADY_EXISTS', HttpStatus.CONFLICT);
@@ -36,7 +34,7 @@ export class UserService {
       // password: hashPassword,
     });
 
-    console.log({ newUser });
+    // console.log({ newUser });
 
     const confirmToken = this.jwtService.sign(
       {
@@ -94,7 +92,8 @@ export class UserService {
   }
 
   async findOneByEmail(email: string) {
-    return await this.userRepository.findOne({ where: { email: email } });
+    const user = await this.userRepository.findOne({ where: { email } });
+    return user;
   }
 
   async findOneActiveByEmail(email: string) {
