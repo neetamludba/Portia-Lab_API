@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtService } from '@nestjs/jwt';
 import { createMock } from '@golevelup/ts-jest';
 
 import { AuthController } from '../auth/auth.controller';
@@ -11,7 +11,6 @@ import { LoginUserDto } from '../auth/dto/login-user.dto';
 import { UserController } from './user.controller';
 import { AuthService } from '../auth/auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ResetPasswordDto } from '../auth/dto/reset.password.dto';
 import { MailService } from '../mail/mail.service';
 
 describe('User E2E TEST', () => {
@@ -107,13 +106,6 @@ describe('User E2E TEST', () => {
     loginData = await authController.login(dto1);
     expect(loginData).toBeTruthy();
   });
-
-  // it('User => Reset Password', async () => {
-  //   let dto = new ResetPasswordDto();
-  //   dto.token = 'xyz';
-  //   dto.password = 'NEW PASSWORD';
-  //   expect(authController.resetPassword(dto)).resolves.toBeTruthy;
-  // });
 
   it('User => Find All', async () => {
     expect(userController.findAll()).toBeTruthy();

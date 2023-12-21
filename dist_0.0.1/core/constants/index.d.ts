@@ -1,0 +1,13 @@
+export declare const SEQUELIZE = "SEQUELIZE";
+export declare const DEVELOPMENT = "development";
+export declare const TEST = "test";
+export declare const STAGING = "staging";
+export declare const PRODUCTION = "production";
+export declare const TEST_REPOSITORY = "TEST_REPOSITORY";
+export declare const TEST_CATEGORY_REPOSITORY = "TEST_CATEGORY_REPOSITORY";
+export declare const TEST_QUESTION_REPOSITORY = "TEST_QUESTION_REPOSITORY";
+export declare const TEST_ASSIGNMENT_REPOSITORY = "TEST_ASSIGNMENT_REPOSITORY";
+export declare const TEST_ATTEMPT_REPOSITORY = "TEST_ATTEMPT_REPOSITORY";
+export declare const TEST_ANSWER_REPOSITORY = "TEST_ANSWER_REPOSITORY";
+export declare const USER_REPOSITORY = "USER_REPOSITORY";
+export declare const SALT_OR_ROUNDS = 10;
