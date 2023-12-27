@@ -15,7 +15,7 @@ export class UserService {
     private readonly userRepository: typeof User,
     private readonly jwtService: JwtService,
     private readonly mailService: MailService,
-  ) { }
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.findOneByEmail(createUserDto.email);
@@ -23,7 +23,6 @@ export class UserService {
     if (user)
       throw new HttpException('USER_ALREADY_EXISTS', HttpStatus.CONFLICT);
 
-    // const hashPassword = await this.hash(createUserDto.password);
     if (createUserDto.password === undefined) {
       createUserDto.password = createUserDto.strKey;
     }
@@ -31,10 +30,7 @@ export class UserService {
 
     const newUser = await this.userRepository.create({
       ...createUserDto,
-      // password: hashPassword,
     });
-
-    // console.log({ newUser });
 
     const confirmToken = this.jwtService.sign(
       {
@@ -45,20 +41,6 @@ export class UserService {
         secret: process.env.RESET_JWT_KEY,
       },
     );
-
-    //   try {
-    //     await this.mailService.sendUserConfirmationEmail(
-    //       newUser,
-    //       process.env.WEBAPP_URL +
-    //         '/' +
-    //         process.env.CONFIRM_ACCT_ENDPOINT +
-    //         '?token=' +
-    //         confirmToken,
-    //     );
-    //   } catch (error) {
-    //     console.log(error);
-    //     throw new HttpException('ERROR_SENDING_EMAIL', HttpStatus.BAD_REQUEST);
-    //   }
 
     return newUser;
   }
@@ -75,7 +57,10 @@ export class UserService {
 
   async findAllForAdmin(companyId: number) {
     return await this.userRepository.findAll({
-      where: { companyID: companyId, userType: ['Teacher', 'Student', 'Guardian'] },
+      where: {
+        companyID: companyId,
+        userType: ['Teacher', 'Student', 'Guardian'],
+      },
     });
   }
 

@@ -90,7 +90,7 @@ describe('Test Assignment INTEGRATION TEST', () => {
   it('Test Assignment => Find All', async () => {
     const result = await controller.findAll();
     expect(result).toBeTruthy();
-  });  
+  });
 
   it('Test Assignment => Find All For Test', async () => {
     // Import to do it this way because of way findAllForTest is designed.

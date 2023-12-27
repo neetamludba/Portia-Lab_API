@@ -15,7 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 @ApiTags('user')
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -41,7 +41,7 @@ export class UserController {
   findAllForTeacher(@Param('id') companyID: string) {
     return this.userService.findAllForTeacher(+companyID);
   }
-  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

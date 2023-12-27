@@ -22,12 +22,14 @@ export class TestAssignmentService {
     private readonly testRepository: typeof Test,
     @Inject(TEST_ATTEMPT_REPOSITORY)
     private readonly testAttemptRepositry: typeof TestAttempt,
-  ) { }
+  ) {}
 
   async create(
     createTestAssignmentDto: CreateTestAssignmentDto,
   ): Promise<TestAssignment> {
-    return await this.testAssignmentRepository.create(createTestAssignmentDto as any);
+    return await this.testAssignmentRepository.create(
+      createTestAssignmentDto as any,
+    );
   }
 
   async findAll() {

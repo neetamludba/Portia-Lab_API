@@ -4,6 +4,6 @@ import { TestAnswerController } from './test-answer.controller';
 
 @Module({
   controllers: [TestAnswerController],
-  providers: [TestAnswerService]
+  providers: [TestAnswerService],
 })
 export class TestAnswerModule {}

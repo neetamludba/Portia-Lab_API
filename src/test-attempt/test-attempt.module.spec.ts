@@ -69,7 +69,6 @@ describe('Test Attempt INTEGRATION TEST', () => {
 
     controller = module.get<TestAttemptController>(TestAttemptController);
     testAnswerModel = module.get<typeof TestAnswer>(getModelToken(TestAnswer)); // Get the TestAnswer model
-
   });
 
   // it('Test Attempt => Create', async () => {
@@ -137,7 +136,9 @@ describe('Test Attempt INTEGRATION TEST', () => {
     ];
 
     // Map the answer objects to TestAnswer instances
-    dto.answers = answers.map(answerData => testAnswerModel.build(answerData));
+    dto.answers = answers.map((answerData) =>
+      testAnswerModel.build(answerData),
+    );
 
     try {
       attempt = await controller.create(dto);
@@ -146,7 +147,6 @@ describe('Test Attempt INTEGRATION TEST', () => {
       console.error('Error:', error);
     }
   });
-
 
   it('Test Attempt => Find One', async () => {
     let atmpt = await controller.findOne(attempt.attemptID.toString());

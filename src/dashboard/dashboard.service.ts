@@ -13,44 +13,48 @@ export class DashboardService {
     private readonly testCategoryService: TestCategoryService,
     private readonly attemptService: TestAttemptService,
     private readonly userService: UserService,
-  ) { }
+  ) {}
 
   async adminDashboardData() {
-    var tests = await this.testService.findAllWithAssignments();
+    let tests = await this.testService.findAllWithAssignments();
     return await this.categorizedTestData(tests);
   }
 
   async userDashboardData(userId: number) {
-    var tests = await this.testService.findAllWithAssignmentsForUser(userId);
+    let tests = await this.testService.findAllWithAssignmentsForUser(userId);
     return await this.categorizedTestData(tests);
   }
 
   async categoryWiseUserScoresForAdmin() {
-    var tests = await this.testService.findAllWithAssignments();
+    let tests = await this.testService.findAllWithAssignments();
     return await this.categorizedUserTestScores(tests);
   }
 
   async categoryWiseUserScoresForUser(userId: number) {
-    var tests = await this.testService.findAllWithAssignmentsForUser(userId);
+    let tests = await this.testService.findAllWithAssignmentsForUser(userId);
     return await this.categorizedUserTestScores(tests);
   }
   async testWiseUserScoresForAdmin() {
-    var tests = await this.testService.findAllWithAssignments();
+    let tests = await this.testService.findAllWithAssignments();
     return await this.UserTestScores(tests);
   }
 
   async testWiseUserScoresForUser(userId: number) {
-    var tests = await this.testService.findAllWithAssignmentsForUser(userId);
+    let tests = await this.testService.findAllWithAssignmentsForUser(userId);
     return await this.UserTestScores(tests);
   }
 
-  private async UserTestScores(tests: Test[]) {
-    let data = [];
-    let userAttemptScores = [];
+  private async UserTestScores(Tests: Test[]) {
+    const data = await this.getDataForTests(Tests);
+    const userAttemptScores = await this.getUserAttemptScores(data);
+    const result = await this.processUserWiseScores(userAttemptScores);
+    return result;
+  }
 
-    for (let t of tests) {
+  private async getDataForTests(Tests: Test[]) {
+    const data = [];
+    for (let t of Tests) {
       const attemptsDTO = await this.attemptService.findAllForTest(t.testID);
-
       data.push({
         testID: t.testID,
         categoryID: t.categoryID,
@@ -58,18 +62,19 @@ export class DashboardService {
         attemptsData: attemptsDTO,
       });
     }
+    return data;
+  }
 
-    //console.log({ data });
+  private async getUserAttemptScores(data: any[]) {
+    const userAttemptScores = [];
+    const users = await this.userService.findAll();
 
-    let users = await this.userService.findAll();
     for (let u of users) {
       const userAttempts = data.filter((d) => {
         const userData = d.attemptsData.filter(
           (a: any) => a.userID === u.userID,
         );
-
-        if (userData && userData.length > 0) return d;
-        else return null;
+        return userData && userData.length > 0 ? d : null;
       });
 
       for (let a of userAttempts) {
@@ -89,33 +94,31 @@ export class DashboardService {
               score: attemptScore,
             });
           }
-        } else
+        } else {
           userAttemptScores.push({
             testID: a.testID,
             categoryID: a.categoryID,
             userID: u.userID,
             score: attemptScore,
           });
+        }
       }
-
     }
+    return userAttemptScores;
+  }
 
-    // console.log({ userAttemptScores });
+  private async processUserWiseScores(userAttemptScores: any[]) {
+    const allTests = await this.testService.findAll();
+    const result = [];
 
-    var tests = await this.testService.findAll();
-    var result = [];
-
-
-
-    tests.forEach((t) => {
-      var item = {
+    allTests.forEach((t) => {
+      let item = {
         testName: t.description,
         userWiseScores: this.userWiseLatestScoresForTest(
           t.testID,
           userAttemptScores,
         ),
       };
-
       result.push(item);
     });
 
@@ -149,16 +152,11 @@ export class DashboardService {
   }
 
   private async categorizedTestData(tests: Test[]) {
-    var categories = await this.testCategoryService.findAll();
-    var result = [];
-
-    // result.push({
-    //   categoryName: 'None',
-    //   tests: tests.filter((t) => t.categoryID === null),
-    // });
+    let categories = await this.testCategoryService.findAll();
+    let result = [];
 
     categories.forEach((c) => {
-      var item = {
+      let item = {
         categoryName: c.name,
         tests: tests.filter((t) => t.categoryID === c.categoryID),
       };
@@ -170,60 +168,23 @@ export class DashboardService {
   }
 
   private async categorizedUserTestScores(tests: Test[]) {
-    let data = [];
-    let userAttemptScores = [];
-    let userAssignmentProgress = [];
+    const data = await this.getDataForTests(tests);
+    const userAttemptScores = await this.getUserAttemptScores(data);
+    const userAssignmentProgress = await this.calculateUserAssignmentProgress(
+      data,
+    );
+    const result = await this.processCategories(
+      userAssignmentProgress,
+      userAttemptScores,
+    );
+    return result;
+  }
 
-    for (let t of tests) {
-      const attemptsDTO = await this.attemptService.findAllForTest(t.testID);
+  private async calculateUserAssignmentProgress(data: any[]) {
+    const userAssignmentProgress = [];
+    const users = await this.userService.findAll();
 
-      data.push({
-        testID: t.testID,
-        categoryID: t.categoryID,
-        assignmentData: t.assignments,
-        attemptsData: attemptsDTO,
-      });
-    }
-
-    //console.log({ data });
-
-    let users = await this.userService.findAll();
     for (let u of users) {
-      const userAttempts = data.filter((d) => {
-        const userData = d.attemptsData.filter(
-          (a: any) => a.userID === u.userID,
-        );
-
-        if (userData && userData.length > 0) return d;
-        else return null;
-      });
-
-      for (let a of userAttempts) {
-        let attemptScore = -1;
-        if (a.attemptsData.length > 0) {
-          for (let attempt of a.attemptsData) {
-            const totalQuestions = attempt.result.length;
-            const correctAnswers = attempt.result.filter(
-              (r: any) => r?.isCorrect,
-            );
-            attemptScore = correctAnswers.length / totalQuestions;
-
-            userAttemptScores.push({
-              testID: a.testID,
-              categoryID: a.categoryID,
-              userID: attempt.userID,
-              score: attemptScore,
-            });
-          }
-        } else
-          userAttemptScores.push({
-            testID: a.testID,
-            categoryID: a.categoryID,
-            userID: u.userID,
-            score: attemptScore,
-          });
-      }
-
       const userAssignments = data.map((d) => {
         const userData = d.assignmentData.filter(
           (a: any) => a.assignedToID === u.userID,
@@ -235,7 +196,6 @@ export class DashboardService {
           userData.forEach(
             (a: TestAssignment) => (progress += a.attempts.length > 0 ? 1 : 0),
           );
-
           progress = progress / userData.length;
 
           return {
@@ -244,37 +204,31 @@ export class DashboardService {
             userID: u.userID,
             progress: progress,
           };
-        } else
+        } else {
           return {
             testID: d.testID,
             categoryID: d.categoryID,
             userID: u.userID,
             progress: -1,
           };
+        }
       });
 
-      userAssignmentProgress = userAssignmentProgress.concat(userAssignments);
+      userAssignmentProgress.push(...userAssignments);
     }
 
-    // console.log({ userAttemptScores }, { userAssignmentProgress });
+    return userAssignmentProgress;
+  }
 
-    var categories = await this.testCategoryService.findAll();
-    var result = [];
-
-    // result.push({
-    //   categoryName: 'None',
-    //   userWiseProgress: this.userWiseAverageProgressForCategory(
-    //     null,
-    //     userAssignmentProgress,
-    //   ),
-    //   userWiseScores: this.userWiseAverageScoreForCategory(
-    //     null,
-    //     userAttemptScores,
-    //   ),
-    // });
+  private async processCategories(
+    userAssignmentProgress: any[],
+    userAttemptScores: any[],
+  ) {
+    const categories = await this.testCategoryService.findAll();
+    const result = [];
 
     categories.forEach((c) => {
-      var item = {
+      let item = {
         categoryName: c.name,
         userWiseProgress: this.userWiseAverageProgressForCategory(
           c.categoryID,
