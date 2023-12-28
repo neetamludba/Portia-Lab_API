@@ -38,7 +38,7 @@ export class UserService {
         email: newUser.email,
       },
       {
-        secret: process.env.RESET_JWT_KEY,
+        secret: process.env.RESET_JWT_KEY || "RESET MY PASSWORD",
       },
     );
 
