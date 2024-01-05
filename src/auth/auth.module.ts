@@ -15,7 +15,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
       session: false,
     }),
     JwtModule.register({
-      secret: process.env.JWT_KEY,
+      secret: process.env.JWT_KEY || "WHAT_IS_A_BOOTCAMP",
       signOptions: {
         expiresIn: process.env.TOKEN_EXPIRY_HRS + 'h',
       },

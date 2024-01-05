@@ -28,6 +28,7 @@ export const databaseProviders = [
           config = databaseConfig.development;
       }
 
+      console.log(config);
       const sequelize = new Sequelize(config);
 
       sequelize.addModels([

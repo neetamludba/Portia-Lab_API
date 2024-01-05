@@ -8,7 +8,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Portia Lab API')
     .setDescription('These are the API that cover the portia lab system.')
-    .setVersion('1.0')
+    .setVersion('1.0.2')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -21,6 +21,8 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization',
   });
 
-  await app.listen(3010);
+  await app.listen(process.env.PORT);
+
+  console.log('Listening on port: ', process.env.PORT);
 }
 bootstrap();

@@ -41,7 +41,7 @@ export class UserController {
   findAllForTeacher(@Param('id') companyID: string) {
     return this.userService.findAllForTeacher(+companyID);
   }
-  
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(+id);

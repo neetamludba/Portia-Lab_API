@@ -41,5 +41,4 @@ describe('DashboardService', () => {
     const result = await service.userDashboardData(2); // Replace with a valid user ID
     expect(result).toBeTruthy();
   });
-
 });

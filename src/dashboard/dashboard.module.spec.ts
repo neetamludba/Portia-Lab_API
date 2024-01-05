@@ -41,7 +41,7 @@ describe('Dashboard E2E TEST', () => {
           autoLoadModels: true,
           synchronize: true,
           models: [User],
-          logging: false
+          logging: false,
         }),
         SequelizeModule.forFeature([
           User,
@@ -53,7 +53,7 @@ describe('Dashboard E2E TEST', () => {
           TestAnswer,
         ]),
         JwtModule.register({
-          secret: process.env.JWT_KEY,
+          secret: process.env.JWT_KEY || "WHAT_IS_A_BOOTCAMP",
           signOptions: {
             expiresIn: process.env.TOKEN_EXPIRY_HRS + 'h',
           },

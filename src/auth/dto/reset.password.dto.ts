@@ -9,7 +9,7 @@ export class ResetPasswordDto {
   @ApiProperty()
   @IsNotEmpty()
   oldPassword: string;
-  
+
   @ApiProperty()
   @IsNotEmpty()
   newPassword: string;

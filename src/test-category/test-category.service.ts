@@ -14,7 +14,9 @@ export class TestCategoryService {
   async create(
     createTestCategoryDto: CreateTestCategoryDto,
   ): Promise<TestCategory> {
-    return await this.testCategoryRepository.create(createTestCategoryDto as any);
+    return await this.testCategoryRepository.create(
+      createTestCategoryDto as any,
+    );
   }
 
   async findAll() {
